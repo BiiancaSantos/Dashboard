@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Eficiência Operacional</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f4f6;
+      margin: 0;
+      padding: 20px;
+    }
+ 
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+ 
+    .dashboard {
+      max-width: 1200px;
+      margin: auto;
+    }
+ 
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+ 
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+ 
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+ 
+    .value {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+ 
+    .conferido { color: #0d6efd; }
+    .auditados { color: #fd7e14; }
+    .defeitos { color: #dc3545; }
+    .homemhora { color: #198754; }
+ 
+    .percentual {
+      background: #6c757d;
+      color: #fff;
+    }
+ 
+    .percentual .value {
+      font-size: 40px;
+    }
+ 
+    .chart-container {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+ 
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+ 
+  <h1>Dashboard de Eficiência Operacional</h1>
+ 
+  <div class="dashboard">
+ 
+    <!-- CARDS -->
+    <div class="cards">
+      <div class="card">
+        <h3>Conferido</h3>
+        <div class="value conferido">1860</div>
+      </div>
+ 
+      <div class="card">
+        <h3>Auditados</h3>
+        <div class="value auditados">558</div>
+      </div>
+ 
+      <div class="card">
+        <h3>Defeitos</h3>
+        <div class="value defeitos">23</div>
+      </div>
+ 
+      <div class="card percentual">
+        <h3>Percentual</h3>
+        <div class="value">30%</div>
+      </div>
+ 
+      <div class="card">
+        <h3>Homem/Hora</h3>
+        <div class="value homemhora">80</div>
+      </div>
+    </div>
+ 
+    <!-- GRÁFICO -->
+    <div class="chart-container">
+      <canvas id="grafico"></canvas>
+    </div>
+ 
+  </div>
+ 
+  <footer>
+    Gestão à Vista • Dashboard desenvolvido em HTML
+  </footer>
+ 
+ <script>
+const sheetUrl = "https://docs.google.com/spreadsheets/d/1NAHmPOKk0HmgQQwguOLWh8EGbeLq_EzVQZw2hz3jups/gviz/tq?tqx=out:json";
+ 
+fetch(sheetUrl)
+  .then(res => res.text())
+  .then(text => {
+    const json = JSON.parse(text.substring(47).slice(0, -2));
+    const rows = json.table.rows;
+ 
+    const labels = [];
+    const conferidos = [];
+    const auditados = [];
+    const naoConformes = [];
+ 
+    rows.forEach(r => {
+      labels.push(r.c[0].v);
+      conferidos.push(r.c[1].v);
+      auditados.push(r.c[2].v);
+      naoConformes.push(r.c[3].v);
+    });
+ 
+    criarGrafico(labels, conferidos, auditados, naoConformes);
+  });
+ 
+function criarGrafico(labels, conferidos, auditados, naoConformes) {
+  const ctx = document.getElementById('grafico');
+ 
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Conferidos', data: conferidos, backgroundColor: '#1F4E79' },
+        { label: 'Auditados', data: auditados, backgroundColor: '#ED7D31' },
+        { label: 'Não Conformes', data: naoConformes, backgroundColor: '#70AD47' }
+      ]
+    }
+  });
+}
+</script>
+ 
+ 
+</body>
+</html>
