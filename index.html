@@ -130,10 +130,10 @@
   const SHEET_ID = "https://docs.google.com/spreadsheets/d/1NAHmPOKk0HmgQQwguOLWh8EGbeLq_EzVQZw2hz3jups/edit?gid=0#gid=0";
  
   const URL_GRAFICO =
-    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Grafico`;
+    `${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Grafico`;
  
   const URL_INDICADORES =
-    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Indicadores`;
+    `${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Indicadores`;
  
   /* ======= GRÁFICO ======= */
   fetch(URL_GRAFICO)
@@ -209,3 +209,4 @@
 </body>
 
 </html>
+
